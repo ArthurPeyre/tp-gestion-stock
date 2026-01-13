@@ -92,6 +92,7 @@ editInputsForm.description = document.getElementById('editdesctxt');
 editInputsForm.brand = document.getElementById('editbrandtxt');
 editInputsForm.stock = document.getElementById('editstocknum');
 editProductBtn = document.getElementById('editProductBtn');
+resetProductBtn = document.getElementById('resetEditBtn');
 
 filterInput = document.getElementById('filter');
 
@@ -212,8 +213,6 @@ La méthode ``setEditForm`` :
 if (id === selectedProductID) {
     selectedProductID = '';
 
-    formsContainer.classList.add('hidden');
-
     forms.forEach(form => {
         form.classList.toggle('hidden');
     });
@@ -283,3 +282,6 @@ Pour cela, vous devrez :
 Appeler la fonction dans la méthode ``refreshProducts()`` et adapter son contenu en conséquence.
 
 Appeler la bonne méthode avec bon écouteur d'évènement au bon élément... **Bonne chance !**
+
+### Aide au développement
+

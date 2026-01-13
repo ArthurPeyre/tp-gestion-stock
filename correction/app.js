@@ -13,8 +13,6 @@ function Product(name, description, brand, stock) {
     this.toHTML = () => {
         return `<div class="row"><div class="data"><span>${this.name}</span><span>${this.description}</span><span>${this.brand}</span><span class="${ this.stock > 0 ? "positive" : this.stock < 0 ? "negative" : "" }">${ this.stock  }</span></div><div class="actions ${ this.id === selectedProductID ? "selected" : "" }"><button onclick="setEditForm('${this.id}')">${svgEdit}</button><button class="delete" onclick="removeProduct('${this.id}')">${svgDel}</button></div>`;
     };
-
-    // console.log("Création d'un produit: ", this);
 }
 
 // GLOABAL VARIABLES
@@ -41,22 +39,6 @@ var toggleFormsBtn;
 var formsContainer;
 var forms;
 
-// REFRESH FUNCTION
-function refreshProducts() {
-    productsContainer.innerHTML = '';
-
-    filterProducts();
-
-    if (filteredProducts.length > 0) {
-        for (let product of filteredProducts) {
-            productsContainer.innerHTML += product.toHTML();
-        }
-    } else {
-        productsContainer.innerHTML = emptyProducts;
-    }
-
-}
-
 // INITIALIZATION FUNCTION
 function initProducts() {
     products.push(new Product("Souris sans fil", "Souris ergonomique 2.4GHz", "Logitech", 25));
@@ -78,8 +60,21 @@ function initProducts() {
 
     // Print in logs
     // console.log(products)
+}
 
-    refreshProducts()
+// REFRESH HTML FUNCTION
+function refreshProducts() {
+    productsContainer.innerHTML = '';
+
+    filterProducts();
+
+    if (filteredProducts.length > 0) {
+        filteredProducts.forEach(product => {
+            productsContainer.innerHTML += product.toHTML();
+        });
+    } else {
+        productsContainer.innerHTML = emptyProducts;
+    }
 }
 
 // ADD PRODUCT FUNCTION
@@ -87,23 +82,27 @@ function addProduct() {
     const name = newInputsForm.name.value.trim();
     const description = newInputsForm.description.value.trim();
     const brand = newInputsForm.brand.value.trim();
-    const stock = newInputsForm.stock.value.trim(); 
+    const stock = newInputsForm.stock.value.trim();
 
     if (name && description && brand && stock) {
-        // Adding to the list of products
         products.push(new Product(name, description, brand, stock));
 
-        // Refresh DOM
         refreshProducts();
 
-        // EMPTY INPUTS FORM
         newInputsForm.name.value = "";
         newInputsForm.description.value = "";
         newInputsForm.brand.value = "";
         newInputsForm.stock.value = "";
     } else {
-        window.alert("Tous les champs doivent être remplis");
+        window.alert("Tous les champs sont requis.")
     }
+}
+
+// REMOVE PRODUCT FUNCTION
+function removeProduct(id) {
+    products = products.filter(product => product.id !== id);
+
+    refreshProducts();
 }
 
 // RESET EDIT FORM
@@ -131,8 +130,6 @@ const resetEditForm = () => {
 function setEditForm(id) {
     if (id === selectedProductID) {
         selectedProductID = '';
-
-        formsContainer.classList.add('hidden');
 
         forms.forEach(form => {
             form.classList.toggle('hidden');
@@ -197,21 +194,6 @@ function editProduct() {
     refreshProducts();
 }
 
-// REMOVE PRODUCT FUNCTION
-function removeProduct(id) {
-    products = products.filter(product => product.id != id);
-
-    if (id == selectedProductID) {
-        setEditForm('');
-        forms.forEach(form => {
-            form.classList.toggle('hidden');
-        });
-        return;
-    }
-
-    refreshProducts();
-}
-
 // FILTER FUNCTION
 const filterProducts = () => {
     const value = filterInput.value.trim().toLowerCase();
@@ -223,9 +205,7 @@ const filterProducts = () => {
     ) : products;
 };
 
-// DOM LOADED
 window.addEventListener('DOMContentLoaded', () => {
-
     // HTML Elements
     productsContainer = document.getElementById('products');
 
@@ -233,18 +213,20 @@ window.addEventListener('DOMContentLoaded', () => {
     newInputsForm.description = document.getElementById('newdesctxt');
     newInputsForm.brand = document.getElementById('newbrandtxt');
     newInputsForm.stock = document.getElementById('newstocknum');
-    addProductBtn = document.getElementById('addProductBtn').addEventListener('click', addProduct);
+    addProductBtn = document.getElementById('addProductBtn');
+    addProductBtn.addEventListener('click', addProduct);
 
     editInputsForm.name = document.getElementById('editnametxt');
     editInputsForm.description = document.getElementById('editdesctxt');
     editInputsForm.brand = document.getElementById('editbrandtxt');
     editInputsForm.stock = document.getElementById('editstocknum');
-    editProductBtn = document.getElementById('editProductBtn').addEventListener('click', editProduct);
+    editProductBtn = document.getElementById('editProductBtn');
+    editProductBtn.addEventListener('click', editProduct);
     resetProductBtn = document.getElementById('resetEditBtn');
     resetProductBtn.addEventListener('click', resetEditForm);
 
     filterInput = document.getElementById('filter');
-    filterInput.addEventListener('input', refreshProducts);
+    filterInput.addEventListener('input', refreshProducts)
 
     formsContainer = document.getElementById('forms__container');
     forms = document.querySelectorAll('.forms > *');
@@ -257,5 +239,4 @@ window.addEventListener('DOMContentLoaded', () => {
     initProducts();
 
     refreshProducts();
-
 });
