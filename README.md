@@ -198,3 +198,7 @@ Dans la continuité, vous allez intégrer la fonctionnalité d'édition d'un pro
 ### Initialiser le formulaire dédié
 
 Tout d'abord, il faudra créer une méthode qui valorisera les champs de saisie, du formulaire de modification, avec les données du produit sélectionné. Pour cela, on stockera l'identifiant du produit dans la variable ``selectedProductID``.
+
+1. Ajouter la méthode ``setEditForm`` qui a pour paramètre ``id``.
+2. Valoriser la variable ``selectedProductID``.
+3. 
