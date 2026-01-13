@@ -349,6 +349,7 @@ main {
                     height: 1.375rem;
                     display: grid;
                     place-items: center;
+                    border-radius: .125rem;
 
                     &:hover {
                         background: var(--bg-secondary);
