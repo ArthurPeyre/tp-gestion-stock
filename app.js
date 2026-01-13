@@ -66,8 +66,10 @@ function initProducts() {
 function refreshProducts() {
     productsContainer.innerHTML = '';
 
-    if (products.length > 0) {
-        products.forEach(product => {
+    filterProducts();
+
+    if (filteredProducts.length > 0) {
+        filteredProducts.forEach(product => {
             productsContainer.innerHTML += product.toHTML();
         });
     } else {
@@ -103,6 +105,108 @@ function removeProduct(id) {
     refreshProducts();
 }
 
+// RESET EDIT FORM
+const resetEditForm = () => {
+    const product = products.find(p => p.id === selectedProductID);
+    
+    if (!product) {
+        selectedProductID = null;
+
+        editInputsForm.name.value = "";
+        editInputsForm.description.value = "";
+        editInputsForm.brand.value = "";
+        editInputsForm.stock.value = "";
+
+        return;
+    }
+    
+    editInputsForm.name.value = product.name;
+    editInputsForm.description.value = product.description;
+    editInputsForm.brand.value = product.brand;
+    editInputsForm.stock.value = product.stock;
+}
+
+// INIT EDIT FORM
+function setEditForm(id) {
+    if (id === selectedProductID) {
+        selectedProductID = '';
+
+        formsContainer.classList.add('hidden');
+
+        forms.forEach(form => {
+            form.classList.toggle('hidden');
+        });
+
+        refreshProducts();
+        resetEditForm();
+
+        return;
+    }
+
+    if (formsContainer.classList.contains('hidden')) {
+        formsContainer.classList.toggle('hidden');
+    }
+
+    selectedProductID = id;
+
+    refreshProducts();
+    
+    resetEditForm();
+
+    if (forms[1].classList.contains('hidden')) {
+        forms.forEach(form => {
+            form.classList.toggle('hidden');
+        });
+    }
+}
+
+// EDIT PRODUCT FUNCTION
+function editProduct() {
+    const name = editInputsForm.name.value.trim();
+    const description = editInputsForm.description.value.trim();
+    const brand = editInputsForm.brand.value.trim();
+    const stock = editInputsForm.stock.value.trim(); 
+
+    if (!name || !description || !brand || !stock) {
+        alert("Tous les sont requis.");
+        return;
+    }
+
+    const product = products.find(p => p.id === selectedProductID);
+
+    if (product) {
+        Object.assign(product, {
+            name: name,
+            description: description,
+            brand: brand,
+            stock: stock
+        });
+    } else {
+        window.alert("Modification impossible : Produit introuvable...");
+    }
+
+
+    editInputsForm.name.value = "";
+    editInputsForm.description.value = "";
+    editInputsForm.brand.value = "";
+    editInputsForm.stock.value = "";
+    
+    selectedProductID = null;
+
+    refreshProducts();
+}
+
+// FILTER FUNCTION
+const filterProducts = () => {
+    const value = filterInput.value.trim().toLowerCase();
+
+    filteredProducts = value ? products.filter(product => 
+        product.name.toLowerCase().includes(value) ||
+        product.brand.toLowerCase().includes(value) ||
+        product.stock == value
+    ) : products;
+};
+
 window.addEventListener('DOMContentLoaded', () => {
     // HTML Elements
     productsContainer = document.getElementById('products');
@@ -119,8 +223,12 @@ window.addEventListener('DOMContentLoaded', () => {
     editInputsForm.brand = document.getElementById('editbrandtxt');
     editInputsForm.stock = document.getElementById('editstocknum');
     editProductBtn = document.getElementById('editProductBtn');
+    editProductBtn.addEventListener('click', editProduct);
+    resetProductBtn = document.getElementById('resetEditBtn');
+    resetProductBtn.addEventListener('click', resetEditForm);
 
     filterInput = document.getElementById('filter');
+    filterInput.addEventListener('input', refreshProducts)
 
     formsContainer = document.getElementById('forms__container');
     forms = document.querySelectorAll('.forms > *');

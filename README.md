@@ -122,7 +122,7 @@ Il existe un nombre important d'évènement avec des utilités propres à chacun
 
 ## Étape 4 - Affichage des produits
 
-Dans cette épate, vous allez devoir coder une méthode actualisant la liste de produits.
+Dans cette étape, vous allez devoir coder une méthode actualisant la liste de produits.
 
 ### Création de la métode
 
@@ -156,7 +156,7 @@ Vous allez intégrer une nouvelle méthode nommée ``addProduct()`` qui :
     - Vider tous les champs du formulaire.
 4. Si faux, alerter l'utilisateur avec le message ``"Tous les champs sont requis"``.
 
-### Lié le clic à la méthode
+### Lier le clic à la méthode
 
 Maintenant que la méthode est prête, vous pouvez ajouter un écouteur d'évènement lors du clic du bouton de soumission de ce formulaire.
 
@@ -195,10 +195,91 @@ Vous allez intégrer la méthode ``removeProduct`` qui :
 
 Dans la continuité, vous allez intégrer la fonctionnalité d'édition d'un produit. Il sera notamment possible de modifier l'intégralité de ses données, à l'exception de son identidiant.
 
-### Initialiser le formulaire dédié
+### Valorisation du formulaire dédié
 
-Tout d'abord, il faudra créer une méthode qui valorisera les champs de saisie, du formulaire de modification, avec les données du produit sélectionné. Pour cela, on stockera l'identifiant du produit dans la variable ``selectedProductID``.
+Tout d'abord, il faudra créer une méthode qui valorisera les champs de saisie du formulaire de modification avec les données du produit sélectionné. Pour cela, vous stockerez l'identifiant du produit dans la variable ``selectedProductID``. Son stockage sera établie dans la méthode suivante.
 
-1. Ajouter la méthode ``setEditForm`` qui a pour paramètre ``id``.
-2. Valoriser la variable ``selectedProductID``.
-3. 
+1. La méthode doit être sous forme d'une constante, nommée ``resetEditForm``.
+2. Elle récupère l'objet produit de la liste ``products`` ayant l'``'id'`` correspondant à l'identifiant sélectionné.
+3. Si l'objet est ``null``, réinitialise la variable ``selectedProductID``, vide le formulaire dédié, et stop la fonction.
+4. Sinon, valoriser les champs du formulaire avec les données de l'objet.
+
+### Gestion de l'affichage du formulaire
+
+La méthode ``setEditForm`` :
+0. Intégrer au début de la fonction:
+```js
+if (id === selectedProductID) {
+    selectedProductID = '';
+
+    formsContainer.classList.add('hidden');
+
+    forms.forEach(form => {
+        form.classList.toggle('hidden');
+    });
+
+    refreshProducts();
+    resetEditForm();
+
+    return;
+}
+```
+1. Prend en paramètre l'identifiant du produit.
+2. Valorise ``selectedProductID`` avec le paramètre.
+3. Rafraîchi le contenu HTML _(Gestion du style)_.
+4. Appel de la fonction précèdente ``resetEditForm``.
+5. Rajouter à la suite :
+```js
+// Si formulaire d'édition caché, inverser la classe 'hidden' pour chacun des deux formulaires.
+if (forms[1].classList.contains('hidden')) {
+    forms.forEach(form => {
+        form.classList.toggle('hidden');
+    });
+}
+```
+
+Cette fonction est déjà appelé, tout comme ``removeProduct``, dans la propriété ``toHTML()`` de chaque produit.
+
+### Édition du produit
+
+Pour finir avec cette fonctionnalité, il faudra créer une dernière fonction ``editProduct()`` qui récupèrera les nouvelles données modifiées du formulaire, et remplacera celles de l'objet.
+
+1. Récupérer les valeurs des champs du formulaire en vérifiant que leur contenu est correct.
+2. Récupérer l'objet à l'aide de la variable ``selectedProductID``.
+3. Si l'objet est trouvé, assigner à l'objet les nouvelles valeurs.
+4. Sinon, alerter l'utilisateur que le produit à modifier est introuvable.
+5. Vider le formulaire.
+6. Supprimer la valeur de l'identifiant stocké.
+7. Rafraîchir le contenu HTML à l'aide de ``refreshProducts()``.
+
+Vous pouvez dès à présent ajouter à ``editProductBtn`` un écouteur d'évènement qui exécutera cette fonction.
+
+N'oubliez pas également l'écouteur d'évènement sur le bouton d'annulation des modification qui appellera la fonction ``resetEditForm``. Vous devrez par conséquent récupérer vous même l'élément HTML à partir du DOM.
+
+### Aide au développement
+
+| Signature | Utilité | Usage |
+| --------- | ------- | ----- |
+| ``.find`` | Renvoie l'objet associé filtré selon la condition souhaité | ``array.find(item => condition)`` |
+
+## Filtrer les produits
+
+Dans cette étape, vous intégrerez une dernière fonctionnalité, qui permet de filtrer les produits à afficher selon ce qui est saisi dans le champ de recherche.
+
+### La méthode
+
+Pour cela, vous devrez :
+1. Créer la constante ``filterProducts`` qui sera utilisé comme fonction.
+2. Récupérer la valeur du champ recherche atteignable depuis la variable ``filterInput``.
+3. Revaloriser ``filteredProducts`` qui est, au lancement de la page, identique à ``products``:
+    - Si value n'est pas ``null``, filtrer ``products`` de sorte à ne renvoyer que les produits répondant aux critères suivant dans l'ordre hiérarchique:
+        1. Nom
+        2. Marque
+        3. Stock
+    - Sinon, lui redonner le contenu de ``products``.
+
+### Application du filtre
+
+Appeler la fonction dans la méthode ``refreshProducts()`` et adapter son contenu en conséquence.
+
+Appeler la bonne méthode avec bon écouteur d'évènement au bon élément... **Bonne chance !**

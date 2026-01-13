@@ -169,20 +169,23 @@ function editProduct() {
     const stock = editInputsForm.stock.value.trim(); 
 
     if (!name || !description || !brand || !stock) {
-        alert("Tous les champs doivent être remplis");
+        alert("Tous les sont requis.");
         return;
     }
 
     const product = products.find(p => p.id === selectedProductID);
 
-    if (!product) return;
+    if (product) {
+        Object.assign(product, {
+            name: name,
+            description: description,
+            brand: brand,
+            stock: stock
+        });
+    } else {
+        window.alert("Modification impossible : Produit introuvable...");
+    }
 
-    Object.assign(product, {
-        name: name,
-        description: description,
-        brand: brand,
-        stock: stock
-    });
 
     editInputsForm.name.value = "";
     editInputsForm.description.value = "";
@@ -237,6 +240,8 @@ window.addEventListener('DOMContentLoaded', () => {
     editInputsForm.brand = document.getElementById('editbrandtxt');
     editInputsForm.stock = document.getElementById('editstocknum');
     editProductBtn = document.getElementById('editProductBtn').addEventListener('click', editProduct);
+    resetProductBtn = document.getElementById('resetEditBtn');
+    resetProductBtn.addEventListener('click', resetEditForm);
 
     filterInput = document.getElementById('filter');
     filterInput.addEventListener('input', refreshProducts);
@@ -250,5 +255,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     initProducts();
+
+    refreshProducts();
 
 });
