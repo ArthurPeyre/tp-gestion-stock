@@ -193,4 +193,8 @@ Vous allez intégrer la méthode ``removeProduct`` qui :
 
 ## Étape 7 - Modification d'un produit
 
-Dans la continuité, vous allez intégrer la fonctionnalité
+Dans la continuité, vous allez intégrer la fonctionnalité d'édition d'un produit. Il sera notamment possible de modifier l'intégralité de ses données, à l'exception de son identidiant.
+
+### Initialiser le formulaire dédié
+
+Tout d'abord, il faudra créer une méthode qui valorisera les champs de saisie, du formulaire de modification, avec les données du produit sélectionné. Pour cela, on stockera l'identifiant du produit dans la variable ``selectedProductID``.
