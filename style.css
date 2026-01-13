@@ -273,8 +273,8 @@ main {
         justify-content: right;
         width: calc(var(--width) + var(--width-btn));
         border-left: var(--separator);
-        border-bottom: var(--separator);
         transition: width 150ms ease-out;
+        /* border-bottom: var(--separator); */
         
         @media (max-width: 1024px) {
             position: fixed;
@@ -374,4 +374,5 @@ footer {
     font-size: .875rem;
     color: var(--fg-secondary);
     background: var(--bg-secondary);
+    border-top: var(--separator);
 }
