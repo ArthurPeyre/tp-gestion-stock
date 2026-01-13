@@ -62,6 +62,12 @@ function initProducts() {
     // console.log(products)
 }
 
+const toggleForms = () => {
+    forms.forEach(form => {
+        form.classList.toggle('hidden');
+    });
+};
+
 // REFRESH HTML FUNCTION
 function refreshProducts() {
     productsContainer.innerHTML = '';
@@ -102,9 +108,7 @@ function addProduct() {
 function removeProduct(id) {
     products = products.filter(product => product.id !== id);
 
-    forms.forEach(form => {
-        form.classList.toggle('hidden');
-    });
+    toggleForms();
 
     resetEditForm();
 
@@ -137,9 +141,7 @@ function setEditForm(id) {
     if (id === selectedProductID) {
         selectedProductID = '';
 
-        forms.forEach(form => {
-            form.classList.toggle('hidden');
-        });
+        toggleForms();
 
         refreshProducts();
         resetEditForm();
@@ -158,9 +160,7 @@ function setEditForm(id) {
     resetEditForm();
 
     if (forms[1].classList.contains('hidden')) {
-        forms.forEach(form => {
-            form.classList.toggle('hidden');
-        });
+        toggleForms();
     }
 }
 
@@ -185,6 +185,8 @@ function editProduct() {
             brand: brand,
             stock: stock
         });
+
+        toggleForms();
     } else {
         window.alert("Modification impossible : Produit introuvable...");
     }
