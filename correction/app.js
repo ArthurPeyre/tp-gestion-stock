@@ -102,6 +102,12 @@ function addProduct() {
 function removeProduct(id) {
     products = products.filter(product => product.id !== id);
 
+    forms.forEach(form => {
+        form.classList.toggle('hidden');
+    });
+
+    resetEditForm();
+
     refreshProducts();
 }
 

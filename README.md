@@ -184,7 +184,9 @@ Notez que son appel est déjà effectué dans la propriété ``toHTML()`` de cha
 Vous allez intégrer la méthode ``removeProduct`` qui :
 1. Prend l'identifiant du produit en paramètre.
 2. Modifier la liste de produits ``products`` afin de garder tous les produits, sauf celui qui a pour identifiant celui passé en paramètre.
-3. Rafraîchir le contenu HTML avec les nouvelles données
+3. Basculer la classe `'hidden'` pour chacun des formulaires contenus dans `forms`.
+4. Réinitialiser le formulaire d'édition.
+5. Rafraîchir le contenu HTML avec les nouvelles données
 
 ### Aide au développement
 

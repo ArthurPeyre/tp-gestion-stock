@@ -346,6 +346,9 @@ main {
                 & > button[type="reset"] {
                     background: var(--bg-primary);
                     color: var(--fg-tertiary);
+                    height: 1.375rem;
+                    display: grid;
+                    place-items: center;
 
                     &:hover {
                         background: var(--bg-secondary);
