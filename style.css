@@ -342,6 +342,16 @@ main {
                     color: #fff;
                     background: var(--btn-bg-primary);
                 }
+
+                & > button[type="reset"] {
+                    background: var(--bg-primary);
+                    color: var(--fg-tertiary);
+
+                    &:hover {
+                        background: var(--bg-secondary);
+                        color: var(--fg-secondary);
+                    }
+                }
                 
                 &.hidden {
                     display: none;
